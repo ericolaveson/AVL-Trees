@@ -1,8 +1,6 @@
 /*******************************************************************************
- * AUTHOR #1  : Eric Olaveson
- * AUTHOR #2  : Andy Olaveson
- * Assign#13  : Final Project
- * DATE       : 12/13/2012
+ * PROGRAMMER : ERIC OLAVESON
+ * DATE       : 9/10/2015
  ******************************************************************************/
 #ifndef LIST_H_
 #define LIST_H_
@@ -61,7 +59,7 @@ public:
 	void push(const type& newElement);
 		// adds a link to the head
 
-	void pop();
+	type pop();
 		// removes a link from the head
 
 	void remove(int index);
@@ -81,6 +79,8 @@ public:
 
 	bool contains(type item);
 		// checks if an item is already in the list
+
+	type peek();
 
 private:
 
@@ -357,32 +357,34 @@ void List<type> :: push(const type& newElement)
  * This method will remove a link from the head of the list.
  ******************************************************************************/
 template<class type>
-void List<type> :: pop()
+type List<type> :: pop()
 {
 	// IF - fails if list is empty
 	if (!isEmpty())
 	{
+		Link<type> *popped = head;
+
 		// IF - check to see if list is of length 1
 		if (tail->prev == NULL)
 		{
 			tail = NULL;
-			delete head;
 			head = NULL;
 		}
 		else
 		{
 			head = head->next;
 			head->prev->next = NULL;
-			delete head->prev;
 			head->prev = NULL;
 		}
 
 		// COUNT - subtract 1 to list size
 		length--;
+		return popped->item;
 	}
 	else
 	{
 		cout << "\n**** You cannot remove from an empty list ****\n";
+		return NULL;
 	}
 }
 
@@ -584,6 +586,13 @@ bool List<type> :: containsIter(int i, type item, bool contains, Link<type> *nod
 	{
 		return false;
 	}
+}
+
+
+template<class type>
+type List<type> :: peek()
+{
+	return isEmpty() ? NULL : head->item;
 }
 
 
